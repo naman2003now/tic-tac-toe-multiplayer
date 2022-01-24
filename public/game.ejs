@@ -1,0 +1,28 @@
+
+<link rel="stylesheet" href="css/login.css">
+<div class="center">
+    <h1>Game ON</h1>
+    <h2>You are playing against soandso</h2>
+    <div class="row">
+        <div id="TL" class="cell">X</div>
+        <div id="TM" class="cell">X</div>
+        <div id="TR" class="cell">O</div>
+    </div>
+    <div class="row">
+        <div id="L" class="cell">O</div>
+        <div id="M" class="cell">X</div>
+        <div id="R" class="cell">X</div>
+    </div>
+    <div class="row">
+        <div id="BL" class="cell"></div>
+        <div id="BM"class="cell">O</div>
+        <div id="BR"class="cell"></div>
+    </div>
+    <h2>Score:</h2>
+    <div class="score">
+        <p class="you">You:1</p>
+        <p class="opponent">soandso:0</p>
+    </div>
+</div>
+<script src="/socket.io/socket.io.js"></script>
+<script src="js/game.js"></script>
