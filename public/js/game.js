@@ -23,8 +23,12 @@ function roomInfo(){
 //Connecting to the room
 socket.emit('join', roomInfo())
 socket.on('full', () => {
-    alert("The room is full")
     location.replace("/")
+    alert("The room is full")
+})
+socket.on('dc', () => {
+    location.replace("/")
+    alert("Your opponent left")
 })
 socket.on('name', () => {
     location.replace("/")
