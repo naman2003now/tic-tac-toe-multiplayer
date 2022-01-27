@@ -75,6 +75,33 @@ body {
   background: linear-gradient(45deg, greenyellow, dodgerblue);
 }
 
+@keyframes self{
+  from {color: red;}
+  to {color: green;}
+}
+
+@keyframes opponent{
+  from {color: green;}
+  to {color: red;}
+}
+
+@keyframes win{
+  from {background-color: #fff;}
+  to {background-color: #afa;}
+}
+
+@keyframes lose{
+  from {background-color: #fff;}
+  to {background-color: #faa;}
+}
+
+.yourturn{
+  animation: self 1s forwards;
+}
+.oppturn{
+  animation: opponent 1s forwards;
+}
+
 .center .cell{
   width: 90px;
   height: 70px;

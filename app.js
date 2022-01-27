@@ -14,6 +14,9 @@ var db = []
 
 io.on("connection", (socket) => {
     console.log("Connection Reached")
+
+
+
     socket.on('join', ({name, roomName}) => {
         players_in_room = db.filter((user) => user.roomName == roomName)
         if(players_in_room.length > 1){
@@ -38,6 +41,10 @@ io.on("connection", (socket) => {
                 db.push({id: socket.id, name, roomName, score: 0})
             }
         }
+
+        socket.on('win', (positions) => {
+            socket.to(roomName).emit('lose', positions)
+        })
     })
 
     socket.on('play', (position) => {

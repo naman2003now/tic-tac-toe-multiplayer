@@ -1,5 +1,17 @@
 let socket = io()
 
+// I feel foolish doing this 🤣😅 
+possibleVictory = [
+    ['TL', 'TM', 'TR'],
+    ['L', 'M', 'R'],
+    ['BL', 'BM', 'BR'],
+    ['TL', 'L', 'BL'],
+    ['TM', 'M', 'BM'],
+    ['TR', 'R', 'BR'],
+    ['TL', 'M', 'BR'],
+    ['BL', 'M', 'TR']
+]
+
 function roomInfo(){
     rawData = location.search
     return {
@@ -20,11 +32,92 @@ socket.on('name', () => {
 })
 
 socket.on('connected', ({player1, player2, playas}) => {
-    const playingas = playas
+    var myScore = 0
+    var opponentScore = 0
+    var playingas = playas
     var turn = playas == "X"
     function play(position, mark){
+        if(turn){
+            turnDisplay = document.getElementsByClassName("yourturn")[0]      
+            if(turnDisplay){ 
+                turnDisplay.className = "oppturn"
+                turnDisplay.innerHTML = "Opponenet's turn"
+            }
+        }else{
+            turnDisplay = document.getElementsByClassName("oppturn")[0]
+            if(turnDisplay){        
+                turnDisplay.className = "yourturn"
+                turnDisplay.innerHTML = "Your turn"
+            }
+        }
         turn = !turn
         document.getElementById(position).innerHTML = mark
+        winingArray = possibleVictory.filter((element) => (
+                document.getElementById(element[0]).innerHTML == document.getElementById(element[1]).innerHTML 
+                && document.getElementById(element[1]).innerHTML == document.getElementById(element[2]).innerHTML 
+                && document.getElementById(element[2]).innerHTML == playingas
+                ))
+        if(winingArray.length > 0){
+            win(winingArray[0])
+        }
+    }
+
+    function win(positions){
+        myScore++
+        document.getElementsByClassName("you")[0].innerHTML = "You: " + myScore
+        socket.emit('win', positions)
+        positions.forEach((pos) => {
+            document.getElementById(pos).style.animation = "win 0.5s 2 alternate ease-in-out"
+        })
+        refresh(positions)
+
+    }
+
+    socket.on('lose', (positions) => {
+        opponentScore++
+        document.getElementsByClassName("opponent")[0].innerHTML = player2 + ": " + opponentScore
+        positions.forEach((pos) => {
+            document.getElementById(pos).style.animation = "lose 0.5s 2 alternate ease-in-out"
+        })
+        refresh(positions)
+    })
+
+    function refresh(positions){
+        setTimeout(() => { 
+            cells.topLeft.innerHTML = " "
+            cells.topMiddle.innerHTML = " "
+            cells.topRight.innerHTML = " "
+            cells.Left.innerHTML = " "
+            cells.Middle.innerHTML = " "
+            cells.Right.innerHTML = " "
+            cells.bottomLeft.innerHTML = " "
+            cells.bottomMiddle.innerHTML = " "
+            cells.bottomRight.innerHTML = " "
+            if(playingas == "X"){
+                playingas = "O"
+            }
+            else{
+                playingas = "X"
+            }
+            turn = playingas == "X"
+            if(!turn){
+                turnDisplay = document.getElementsByClassName("yourturn")[0]      
+                if(turnDisplay){ 
+                    turnDisplay.className = "oppturn"
+                    turnDisplay.innerHTML = "Opponenet's turn"
+                }
+            }else{
+                turnDisplay = document.getElementsByClassName("oppturn")[0]
+                if(turnDisplay){        
+                    turnDisplay.className = "yourturn"
+                    turnDisplay.innerHTML = "Your turn"
+                }
+            }
+            positions.forEach((pos) => {
+                document.getElementById(pos).style.animation = ""
+            })
+        }, 1000)
+
     }
 
     function mark(position){
@@ -81,6 +174,14 @@ socket.on('connected', ({player1, player2, playas}) => {
     cells.bottomLeft.innerHTML = " "
     cells.bottomMiddle.innerHTML = " "
     cells.bottomRight.innerHTML = " "
+
+    if(!turn){
+        turnDisplay = document.getElementsByClassName("yourturn")[0]
+        if(turnDisplay){        
+            turnDisplay.className = "oppturn"
+            turnDisplay.innerHTML = "Opponenet's turn"
+        }
+    }
 
 })
 
