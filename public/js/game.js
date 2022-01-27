@@ -60,6 +60,18 @@ socket.on('connected', ({player1, player2, playas}) => {
         if(winingArray.length > 0){
             win(winingArray[0])
         }
+
+        emtpyBoxes = possibleVictory.filter((element) => (
+            document.getElementById(element[0]).innerHTML == " "
+            || document.getElementById(element[1]).innerHTML == " "
+            || document.getElementById(element[2]).innerHTML == " " 
+            ))
+        if(emtpyBoxes.length == 0){
+            ['TL', 'TM', 'TR', 'L', 'M', 'R', 'BL', 'BM', 'BR'].forEach((pos) => {
+                document.getElementById(pos).style.animation = "draw 0.5s 2 alternate ease-in-out"
+            })
+            refresh(['TL', 'TM', 'TR', 'L', 'M', 'R', 'BL', 'BM', 'BR'])
+        }
     }
 
     function win(positions){

@@ -90,6 +90,11 @@ body {
   to {background-color: #afa;}
 }
 
+@keyframes draw{
+  from {background-color: #fff;}
+  to {background-color: rgb(242, 255, 170);}
+}
+
 @keyframes lose{
   from {background-color: #fff;}
   to {background-color: #faa;}
